@@ -42,6 +42,15 @@ export function InputField({
       onChange={() => handleCheckboxChange(id)}
       checked={fieldState[id] as boolean}
       disabled={disabled}
+      style={
+        invalidState[id]
+          ? {
+              borderWidth: "2px",
+              borderColor: "darkred",
+              borderStyle: "solid",
+            }
+          : {}
+      }
     />
   ) : (
     <input

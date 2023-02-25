@@ -13,7 +13,7 @@ type Props = {
   invalidState: any;
   disabled?: (arg0: any) => boolean;
   required?: boolean;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
 };
 
 export function FieldEntry({

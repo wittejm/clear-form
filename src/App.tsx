@@ -1,4 +1,5 @@
-import { Button, Checkbox } from "@mui/material";
+import { HelpOutline } from "@mui/icons-material";
+import { Button, Checkbox, Tooltip } from "@mui/material";
 import moment from "moment";
 import React, { useState } from "react";
 import "./App.css";
@@ -67,11 +68,13 @@ export const FIELDS: Field[] = [
   // VITALS (1 to 6)
   {
     id: "county",
-    label: "County",
+    label: "Filing County",
     selectionList: COUNTIES,
     required: true,
     feeWaiverFields: ["IN THE CIRCUIT COURT OF THE STATE OF OREGON"],
     statewidePacketFields: ["FOR THE COUNTY OF"],
+    tooltip:
+      "If seeking a name change only, file in the county you live in. If you are changing your gender, or both your name and gender, you can file in any county",
   },
   {
     id: "fullname",
@@ -278,6 +281,17 @@ export const FIELDS: Field[] = [
       "I ask that this record be SEALED by the court because check all that apply",
     ],
     checkbox: true,
+    tooltip: "Must select one of the two options below",
+    validation: (value, fieldState) => {
+      return (
+        (!value &&
+          !fieldState.requestChangeOfSexSealed &&
+          !fieldState.addressConfidentiality) ||
+        (value &&
+          fieldState.addressConfidentiality !==
+            fieldState.requestChangeOfSexSealed)
+      );
+    },
   },
   {
     id: "addressConfidentiality",
@@ -288,7 +302,6 @@ export const FIELDS: Field[] = [
     ],
     checkbox: true,
     disabled: (fieldState) => !fieldState.sealed,
-    validation: (value, fieldState) => {},
   },
   {
     id: "requestChangeOfSexSealed",
@@ -332,11 +345,11 @@ export const FIELDS: Field[] = [
   },
   {
     id: "totalMonthlyIncomeJobs",
-    label: "Monthly income from all jobs $",
+    label: "Average monthly income from all jobs $",
     feeWaiverFields: [
       "Total monthly income from all jobs before taxes are taken out",
     ],
-    tooltip: `"Total Monthly income from all jobs before taxes are taken out"`,
+    tooltip: `"Total average monthly income from all jobs before taxes are taken out"`,
   },
   {
     id: "totalMonthlyIncomeOther",
@@ -464,7 +477,7 @@ const DEMO_INITIAL_FIELD_STATE = {
   formerName5: "former lastName5",
   formerName6: "former lastName6",
   sealed: true,
-  addressConfidentiality: true,
+  addressConfidentiality: false,
   requestChangeOfSexSealed: true,
   numberInHousehold: "4",
   snap: "200",
@@ -485,6 +498,7 @@ const DEMO_INITIAL_FIELD_STATE = {
 function App() {
   const [fieldState, setFieldState] = useState<any>(INITIAL_FIELD_STATE);
   const [invalidState, setInvalidState] = useState<any>(INITIAL_INVALID_STATE);
+  const [anyInputsInvalid, setAnyInputsInvalid] = useState(false);
   const [isValidationDisabled, setIsValidationDisabled] = useState(false);
   const handleChange = (e: React.BaseSyntheticEvent) => {
     setFieldState((oldState: any) => {
@@ -506,7 +520,7 @@ function App() {
   const handleFeeWaiverSubmit = () => {
     if (
       !isValidationDisabled &&
-      !validate("feeWaiver", fieldState, setInvalidState)
+      !validate("feeWaiver", fieldState, setInvalidState, setAnyInputsInvalid)
     )
       return;
     fillAndDownloadFeeWaiver(fieldState);
@@ -514,11 +528,17 @@ function App() {
   const handleStatewidePacketSubmit = () => {
     if (
       !isValidationDisabled &&
-      !validate("statewidePacket", fieldState, setInvalidState)
+      !validate(
+        "statewidePacket",
+        fieldState,
+        setInvalidState,
+        setAnyInputsInvalid,
+      )
     )
       return;
     fillAndDownloadStatewidePacket(fieldState);
   };
+  console.log("anyInputsInvalid", anyInputsInvalid);
 
   return (
     <div className="App">
@@ -583,7 +603,43 @@ function App() {
                 />
               );
             })}
-            <h3>Waiver Requirements</h3>
+            <h3>
+              {" "}
+              <Tooltip
+                title={
+                  <span className="tooltipText">
+                    <div>
+                      There is a $124 filing fee for this motion. If the client
+                      is low-income, they may qualify for a fee waiver.
+                      "Low-Income" is up to the discretion of the judge but
+                      based on having an income below %133 of the federal povery
+                      line. If a client is close or the fee would be a hardship,
+                      they should fill out the below
+                    </div>
+                    <div>
+                      <div>By household size:</div>
+                      <div>1: $1,616/month ($19,391/year)</div>
+                      <div>2: $2,186/month ($26,228/year)</div>
+                      <div>3: $2,755/month ($33,064/year)</div>
+                      <div>4: $3,325/month ($39,900/year)</div>
+                    </div>
+                    <div>
+                      <a
+                        className="link"
+                        href="https://aspe.hhs.gov/sites/default/files/documents/f7117d0642f0eeeb102c9b2c264f1aa2/detailed-guidelines-2023.xlsx"
+                      >
+                        Federal poverty guidelines
+                      </a>
+                    </div>
+                  </span>
+                }
+              >
+                <span className="iconSpan">
+                  <HelpOutline className="myIcon" />
+                </span>
+              </Tooltip>{" "}
+              Waiver Requirements
+            </h3>
             {FIELDS.slice(30, 35).map((field) => {
               return (
                 <FieldEntry
@@ -634,6 +690,11 @@ function App() {
               Download Fee Waiver
             </button>
           </div>
+          {anyInputsInvalid && (
+            <div className="pleaseComplete">
+              Please complete all highlighted fields
+            </div>
+          )}
         </div>
       </div>
       <div>

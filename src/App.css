@@ -42,6 +42,10 @@
   font-weight: 500;
   font-size: 20px;
 }
+.pleaseComplete {
+  color: darkred;
+  font-weight: 500;
+}
 .myIcon {
   transform: scale(1);
 }
@@ -50,4 +54,9 @@
 }
 .tooltipText {
   font-size: 18px;
+}
+
+.link {
+  color: blue;
+  font-weight: 600;
 }

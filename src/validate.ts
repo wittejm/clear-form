@@ -16,6 +16,7 @@ export default function validate(
   form: "feeWaiver" | "statewidePacket",
   fieldState: any,
   setInvalidState: (arg0: any) => void,
+  setAnyInputsInvalid: (arg0: boolean) => void,
 ) {
   let foundInvalid = false;
   FIELDS.forEach((field) => {
@@ -47,5 +48,6 @@ export default function validate(
     }
   });
 
+  setAnyInputsInvalid(foundInvalid);
   return !foundInvalid;
 }
