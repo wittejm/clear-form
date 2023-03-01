@@ -8,6 +8,8 @@ import {
 
 const FEE_WAIVER_CHECKED_LIST = [
   "plaintiffpetitioner", // CHECKED "I am the plaintiff"
+  "Filing fee for",
+  "PetitionComplaintClaim",
   "No", // CHECKED "I am not represented by an attorney"
   // "Food Stamps SNAPSupplemental Nutrition Assistance Program", // CHECKED IF SNAP VALUE IS NONZERO
   // "Supplemental Security Income SSI", // CHECKED IF SSI VALUE IS NONZERO
