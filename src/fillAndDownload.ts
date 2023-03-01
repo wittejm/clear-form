@@ -102,8 +102,8 @@ export async function fillAndDownloadFeeWaiver(fieldState: any) {
   );
   totalExpensesField.setText(`${totalMonthyExpenses.toFixed(2)}`);
 
-  const signatureField = form.getTextField("Signature");
-  signatureField.setText(`\\s\\ ${fieldState.fullname}`);
+  // const signatureField = form.getTextField("Signature");
+  // signatureField.setText(`\\s\\ ${fieldState.fullname}`);
 
   const todaysDateField = form.getTextField("Date");
   todaysDateField.setText(format(new Date(), "MM/dd/yyyy"));
@@ -156,8 +156,9 @@ export async function fillAndDownloadStatewidePacket(fieldState: any) {
       });
     }
   });
-  const formField = form.getTextField("Signature");
-  formField.setText(`\\s\\ ${fieldState.fullname}`);
+
+  // const formField = form.getTextField("Signature");
+  // formField.setText(`\\s\\ ${fieldState.fullname}`);
 
   const todaysDateField = form.getTextField("Date");
   todaysDateField.setText(format(new Date(), "MM/dd/yyyy"));
