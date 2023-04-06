@@ -334,7 +334,7 @@ export const FIELDS: Field[] = [
   {
     id: "ohp",
     label: "Enrolled in Oregon Health Plan",
-    feeWaiverFields: [],
+    feeWaiverFields: ["Oregon Health Plan OHP"],
     checkbox: true,
   },
   {
@@ -538,7 +538,6 @@ function App() {
       return;
     fillAndDownloadStatewidePacket(fieldState);
   };
-  console.log("anyInputsInvalid", anyInputsInvalid);
 
   return (
     <div className="App">
