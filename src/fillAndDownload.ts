@@ -148,6 +148,7 @@ export async function fillAndDownloadStatewidePacket(fieldState: any) {
                 .getRadioGroup(statewidePacketField)
                 .select(fieldState[field.id]),
             );
+            form.getCheckBox(`${fieldState[field.id]}_2`).check();
           }
         } else {
           const formField = form.getTextField(statewidePacketField);

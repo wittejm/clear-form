@@ -150,7 +150,11 @@ export const FIELDS: Field[] = [
     id: "changeOfSex",
     label: "Change of Sex",
     checkbox: true,
-    statewidePacketFields: ["SEX", "changing my legal sex"],
+    statewidePacketFields: [
+      "SEX",
+      "changing my legal sex",
+      "Petitioners legal sex is changed to",
+    ],
   },
   {
     id: "gender",
