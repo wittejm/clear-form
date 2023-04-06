@@ -28,10 +28,12 @@ export async function fillAndDownloadFeeWaiver(fieldState: any) {
   FIELDS.forEach((field) => {
     if (field.feeWaiverFields) {
       field.feeWaiverFields.forEach((feeWaiverField) => {
-        if (field.checkbox && fieldState[field.id]) {
-          field.feeWaiverFields?.forEach((feeWaiverField) =>
-            form.getCheckBox(feeWaiverField).check(),
-          );
+        if (field.checkbox) {
+          if (fieldState[field.id]) {
+            field.feeWaiverFields?.forEach((feeWaiverField) =>
+              form.getCheckBox(feeWaiverField).check(),
+            );
+          }
         } else {
           const formField = form.getTextField(feeWaiverField);
           formField.setText(fieldState[field.id]);
