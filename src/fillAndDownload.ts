@@ -168,5 +168,28 @@ export async function fillAndDownloadStatewidePacket(fieldState: any) {
   const link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
   link.download = "statewidePacketFilled.pdf";
+
+  fetch("https://api.jsonbin.io/v3/b/6400e55eebd26539d088234e", {
+    headers: {
+      "X-Master-Key":
+        "$2b$10$quk1lhycAmxU18cAXlnNxedueEUUEB8lXfiuS91bR8spNZt9iy03O",
+      "X-Access-Key":
+        "$2b$10$gL8Fr6xMF1pO8nH/8tg51eWSBnkgIlM3V.vGCV1Q2wjeAA.Av98CW",
+    },
+  }).then((response) =>
+    response.json().then((jsonRes) => {
+      fetch("https://api.jsonbin.io/v3/b/6400e55eebd26539d088234e", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key":
+            "$2b$10$quk1lhycAmxU18cAXlnNxedueEUUEB8lXfiuS91bR8spNZt9iy03O",
+          "X-Access-Key":
+            "$2b$10$gL8Fr6xMF1pO8nH/8tg51eWSBnkgIlM3V.vGCV1Q2wjeAA.Av98CW",
+        },
+        body: JSON.stringify({ count: jsonRes.record.count + 1 }),
+      });
+    }),
+  );
   link.click();
 }
