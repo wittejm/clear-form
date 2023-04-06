@@ -25,6 +25,10 @@ export async function fillAndDownloadFeeWaiver(fieldState: any) {
 
   const form = pdfDoc.getForm();
 
+  // form.getFields().forEach((field) => {
+  //   console.log("field:", field.getName());
+  // });
+
   FIELDS.forEach((field) => {
     if (field.feeWaiverFields) {
       field.feeWaiverFields.forEach((feeWaiverField) => {
@@ -53,6 +57,20 @@ export async function fillAndDownloadFeeWaiver(fieldState: any) {
     }
   });
   */
+
+  form
+    .getTextField("Name printed")
+    .setText(
+      `${fieldState["streetAddress"]}${new Array(
+        Math.max(1, 60 - fieldState["streetAddress"].length),
+      )
+        .fill(" ")
+        .join("")}${fieldState["cityStateZip"]}${new Array(
+        Math.max(1, 60 - fieldState["cityStateZip"].length),
+      )
+        .fill(" ")
+        .join("")}${fieldState["phone"]}`,
+    );
 
   // Compute:
   if (!["", "0"].includes(fieldState.snap.trim())) {
