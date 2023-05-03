@@ -545,7 +545,6 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Name & Gender Change</h2>
       <div className="row">
         <div>
           <form>
